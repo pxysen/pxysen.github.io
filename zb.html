@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zxc</title>
+    <script src="js/jquery.min.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="js/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+<div class="container" id="container1" style="display:block">
+    <div class="col-lg-8 col-lg-offset-2" align="center">
+        <br>
+        <br>
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h2 align="center">zxc</h2></div>
+            <div class="panel-body">
+                <form action="#" method="post">
+                    <br>
+                    <div class="input-group">
+                        <div class="input-group-addon ">wxid:</div>
+                        <input type="text" id="s0" class="form-control" disabled="disabled" required>
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <div class="input-group-addon ">mid:</div>
+                        <select id="s1" class="form-control" onchange="s12()">
+                        </select>
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <div class="input-group-addon ">ww:</div>
+                        <select id="s2" class="form-control"  onchange="s13()">
+                        </select>
+                    </div>
+                    <br>
+                    <div align="left">Cookie：</div>
+                    <textarea id="s3" class="form-control" style="resize:none;" rows="3"></textarea>
+                    <br>
+                    <button class="btn btn-primary btn-block" type="button" onclick="opens()">打开</button>
+                    </div>
+                </form>
+            </div>
+            <div class="panel-footer">&copy; 2023 zxc, Inc.</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    var s0=$("#s0");
+    var s1=$("#s1");
+    var s2=$("#s2");
+    var s3=$("#s3");
+    
+        
+    
+    function s11(wxid){
+    fetch('http://106.53.145.222:9988/get?wxid='+wxid)
+    .then(response => response.json())
+    .then(data => {
+        window.myGlobalData = data;
+        var e = data.mid;
+        for(i=e.length-1;i>-1;i--){
+            s1.append("<option value='"+e[i]+"'>"+e[i]+"</option>");
+        }
+        s12();
+        
+    })
+    .catch(error => console.error('Error:', error));
+    }
+
+    function s12(){
+        $("#s2").empty();
+        $("#s3").empty();
+        var e = window.myGlobalData.data;
+        for(i=e.length-1;i>-1;i--){
+            if (s1.val()==e[i].mid) {                    
+            s2.append("<option value='"+e[i].ck+"'>"+e[i].ww+"</option>");
+            }
+        }
+        s3.val(s2.val());
+        
+
+    
+    }
+    function s13(){
+        s3.val(s2.val());
+    }
+    
+    function opens(){
+        //window.open(zf);
+        token = s2.val().split("token=")[1];        
+        //window.location.href='http://119.91.73.33:9001/login.html?mid='+s1.val()+'&token='+token;
+        window.open('http://119.91.73.33:9001/login.html?mid='+s1.val()+'&token='+token)
+    }
+    
+    
+    $(function (){
+        var wxid = window.document.location.href.split("html?wxid=")[1];
+	    if(typeof(wxid) == "string"){
+	        s0.val(wxid);
+	        s11(wxid);
+	        
+        } else {
+		    return wxid;
+	    }        
+        
+    })
+</script>
+</body>
