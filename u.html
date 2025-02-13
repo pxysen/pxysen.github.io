@@ -1,199 +1,111 @@
 <!DOCTYPE html>
+<html lang="en">
 
-<html><head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
-    <title>点击复制内容</title>
-</head>
-<body>
-
-<script src="https://meta-xc.oss-cn-hangzhou.aliyuncs.com/assets/libs/jquery/dist/jquery.min.js"></script>
-
-<style>
-body{text-align: center;margin: 0;font-size: 16px;}
-.title{margin-top: 50px;}
-.box{width: 170px;height: 150px;margin: auto;margin-top: 30px;}
-.boxcent{width: 56px;height: 80px;background: #ffe7d2;margin: auto;margin-top: 50px;border-radius: 32px;}
-.boxcent:hover{background: #ffb575;}
-.readme{max-width: 270px;margin: auto;background: #f7f7f7;border-radius: 5px;padding: 10px;color: #888;}
-#divnone{margin: 0;
-    color: #222;
-    font-size: 12px;
-    padding: 70px 15px 20px;
-    text-align: center;}
-.h3{text-align: center;font-size: 20px;padding-bottom: 10px;}
-.span{color: #fff;display: inline-block;width: 25px;height: 25px;background: #8acc7e;border-radius: 50%;line-height: 25px;text-align: center;margin-right: 7px;}
-.sp{font-size: 12px;color: #888;margin-top: 30px;background: #f5f5f5;padding: 0px 5px;border-radius: 3px;}
-.bottom{color: #08f;position: fixed;bottom: 20px;width: 100%;text-align: center;height: 30px;}
-#tips{position: fixed;
-    top: 0px;
-    right: 0;
-    left: 0;
-	z-index:9;
-		}
-.tips{background: #5bccff;font-size: 14px;
-    color: #fff;
-    width: 118px;
-    padding: 5px 10px;
-    border-radius: 3px;
-    float: right;
-    margin-right: 10px;
-    box-shadow: 1px 1px rgba(221, 221, 221, .5);
-    margin-top: 15px;
-	-webkit-animation: shaking 2.2s linear infinite;}
-.tipsTop{background: #5bccff;
-    width: 10px;
-    height: 10px;
-    position: absolute;
-    margin-top: -10px;
-    right: 20px;
-    -webkit-transform: rotate(45deg);}
-.tipsTxt{}
-@keyframes shaking{
-    5% {
-		margin-top: 15px;
-	}
-	10% {
-		margin-top: 25px;
-	}
-	15% {
-		margin-top: 15px;
-	}
-	20% {
-		margin-top: 25px;
-	}
-	25% {
-		margin-top: 15px;
-	}
-	100% {
-		margin-top: 15px;
-	}
-}
-
-.topinfo{background: #08f;
-    color: #fff;
-    width: 80px;
-    margin: auto;
-    margin-bottom: 10px;
-    height: 80px;
-    border-radius: 50%;
-    line-height: 80px;
-    font-size: 50px;}
-.finfo{font-size: 18px;
-    font-weight: bold;
-    color: #03081A;
-    letter-spacing: 2px;}
-.furl{padding: 15px 0;
-    word-break: break-all;
-    font-size: 14px;
-    color: #03081A;}
-.fbox{    font-size: 16px;
-    margin-bottom: 13px;
-    font-weight: normal;
-    color: #878B99;}
-.btn{width: 80%;
-    margin: 13px auto 0;
-    padding: 10px 0;
-    text-align: center;
-    background: #08f;
-    color: #fff;
-    border-radius: 6px;
-    outline: none;
-    border: none;}
-.wr{    background: #333;
-    color: #fff;
-    margin: auto;
-    position: absolute;
-    right: 50px;
-    left: 50px;
-    top: 50px;
-    padding: 5px;
-    border-radius: 3px;
-    display: none;}
-</style>
-<div class="wr" id="wr1">复制成功，请打开淘宝，在搜索框粘贴访问</div>
-<div id="divnone">
-<div class="topinfo">!</div>
-<div class="finfo">访问说明</div>
-<div class="furl"></div>
-<div class="fbox">由于微信内无法打开链接，请复制链接后使用淘宝或者浏览器访问</div>
-<button class="btn" id="copy">点此复制</button>
-</div>
-<script>
-    /**
-     * [点击复制内容移动端全兼容(专治各种移动端浏览器)]
-     * @author  majiang by beijing
-     * @createtime  2018-11-17
-     * @blog  http://www.love85g.com
-     */
-    ;(function($) {
-            var defaults = {
-                copyUrl: "",
-                tipTime: 2000,
-                copyId: ""
-            };
-            $.extend({
-                copy: function(option) {
-                    var options = $.extend({}, defaults, option);
-                    var URL = options.copyUrl == "" ? window.location.href.split('#')[0] : options.copyUrl;
-                    var cId = options.copyId == "" ? '#copy' : options.copyId;
-                    var u = navigator.userAgent;
-                    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
-                    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-                    var aEle = document.querySelectorAll(cId);
-                    if (isiOS) {
-                        $(aEle).each(function() {
-                            var index = $(this).attr("id").split("y")[1];
-                            $('body').append('<a id="selector' + index + '" style="position:absolute;top:-9999px;left:-9999px;">' + URL + '</a>');
-                            this.addEventListener('click', function() {
-                                var copyDOM = document.querySelectorAll('#selector' + index);
-                                var range = document.createRange();
-                                range.selectNode(copyDOM[0]);
-                                window.getSelection().removeAllRanges();
-                                window.getSelection().addRange(range);
-                                document.execCommand('copy');
-                                document.getElementById("wr1").style.display="block";
-                                setTimeout(function() {
-                                    document.getElementById("wr1").style.display="none";
-                                }, options.tipTime)
-                            }, false)
-                        })
-                    } else {
-                        $(aEle).each(function() {
-                            var index = $(this).attr("id").split("y")[1];
-                            $('body').append('<textarea id="selector' + index + '" style="position:absolute;top:-9999px;left:-9999px;" readonly>' + URL + '</textarea>');
-                            $(this)[0].onclick = function(event) {
-                                $("#selector" + index).select();
-                                document.execCommand("copy", false, null);
-                                document.getElementById("wr1").style.display="block";
-                                setTimeout(function() {
-                                    document.getElementById("wr1").style.display="none";
-                                }, options.tipTime)
-                            }
-                        })
-                    }
-                }
-            })
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL参数提取</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
         }
-    )(jQuery);
 
-</script>
-<script>
-    var url = (function(){
-        var url = window.document.location.href.split("u.html?u=");
-	    if(typeof(url[1]) == "string"){
-	        return decodeURI(url[1]);
-        } else {
-		    return url[0];
-	    }
-		})();
-    $.copy({
-        copyUrl:url, //自定义复制链接地址
-        tipTime:1000, //提示消失时间
-        copyId:"#copy"//复制按钮id
-    });
+        h1 {
+            text-align: center;
+            color: #333;
+        }
 
-</script>
+        #paramsContainer {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
+        #paramsContainer div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        #paramsContainer label {
+            width: 150px;
+            font-weight: bold;
+            color: #555;
+            margin-right: 10px;
+        }
+
+        #paramsContainer input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        #paramsContainer button {
+            margin-left: 10px;
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #paramsContainer button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            // 获取url中的参数
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramsObj = {};
+            urlParams.forEach((value, key) => {
+                paramsObj[key] = value;
+            });
+
+            const container = document.getElementById("paramsContainer");
+
+            for (const [key, value] of Object.entries(paramsObj)) {
+                const div = document.createElement("div");
+
+                const label = document.createElement("label");
+                label.textContent = key + ": ";
+
+                const input = document.createElement("input");
+                input.type = "text";
+                input.value = value;
+                input.readOnly = true;
+
+                const button = document.createElement("button");
+                button.textContent = "复制";
+
+                button.onclick = function () {
+                    input.select();
+                    input.setSelectionRange(0, 99999); // For mobile devices
+                    document.execCommand("copy");
+                    alert("已复制: " + value);
+                };
+
+                div.appendChild(label);
+                div.appendChild(input);
+                div.appendChild(button);
+
+                container.appendChild(div);
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <h1>URL参数展示</h1>
+    <div id="paramsContainer"></div>
 </body>
+
 </html>
