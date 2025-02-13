@@ -55,6 +55,8 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            text-align: center; /* 水平居中 */
+            white-space: nowrap; /* 防止文字换行 */
         }
 
         #paramsContainer button:hover {
@@ -76,7 +78,7 @@
                 const div = document.createElement("div");
 
                 const label = document.createElement("label");
-                label.textContent = key + ": ";
+                label.textContent = key + ":";
 
                 const input = document.createElement("input");
                 input.type = "text";
